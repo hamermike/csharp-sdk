@@ -11,8 +11,13 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-dotnet@v1
+      - uses: octokit/request-action@v2.x
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        id: get_collaborator_permission
         with:
-          dotnet-version: '2.2.x'
-      - run: dotnet build
+          route: GET /repos/:owner/:repo/collaborators/:username/permission
+          owner: Bandwidth
+          repo: csharp-sdk
+          username: ${{ github.event.release.author.login }}
+      - run: echo "Permission - ${{ fromJson(steps.get_collaborator_permission.outputs.data).permission }}"
