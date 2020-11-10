@@ -8,7 +8,7 @@ namespace Bandwidth.Standard.FunctionalTests
         [Fact]
         public void ClientShouldThrowWhenMessagingTokenIsNull()
         {
-            static void action() => new BandwidthClient.Builder()
+            Action action = () => new BandwidthClient.Builder()
                 .Environment(Bandwidth.Standard.Environment.Production)
                 .MessagingBasicAuthCredentials(null, "secret")
                 .Build();
