@@ -14,5 +14,5 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '2.2.x'
-      - run: dotnet build
+      # - run: dotnet build
       - run: echo ${{ github.event }}
