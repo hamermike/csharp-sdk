@@ -1,3 +1,4 @@
+#add a comment
 name: Deploy
 on:
   release:
@@ -14,3 +15,4 @@ jobs:
         with:
           dotnet-version: '2.2.x'
       - run: dotnet build
+      - run: echo ${{ github.event }}
