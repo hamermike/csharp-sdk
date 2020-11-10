@@ -10,9 +10,16 @@ jobs:
     if: ${{ !github.event.release.prerelease && github.event.release.target_commitish == 'master' }}
     runs-on: ubuntu-latest
     steps:
+      - uses: octokit/request-action@v2.x
+        id: get_collaborator_permission
+        with:
+          route: GET /repos/:owner/:repo/collaborators/:username/permission
+          owner: Bandwidth
+          repo: csharp-sdk
+          username: ${{ github.event.release.author.login }}
+      - run: echo "Permission - ${{ fromJson(steps.get_collaborator_permission.outputs.data).permission }}"
       - uses: actions/checkout@v2
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '2.2.x'
       - run: dotnet build
-      - run: echo ${{ github.event }}
