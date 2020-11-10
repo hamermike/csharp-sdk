@@ -16,7 +16,7 @@ jobs:
         id: get_collaborator_permission
         with:
           route: GET /repos/:owner/:repo/collaborators/:username/permission
-          owner: Bandwidth
+          owner: hamermike
           repo: csharp-sdk
           username: ${{ github.event.release.author.login }}
       - run: echo "Permission - ${{ fromJson(steps.get_collaborator_permission.outputs.data).permission }}"
