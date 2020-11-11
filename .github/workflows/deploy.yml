@@ -13,13 +13,14 @@ jobs:
       - uses: octokit/request-action@v2.x
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        id: get_collaborator_permission
+        id: get_repo_permissions_for_user
         with:
           route: GET /repos/:owner/:repo/collaborators/:username/permission
-          owner: hamermike
-          repo: csharp-sdk
+          owner: hamermike # ${{ github.event.organization.name }}
+          repo: ${{ github.event.repository.name }}
           username: ${{ github.event.release.author.login }}
-      - run: echo "Permission - ${{ fromJson(steps.get_collaborator_permission.outputs.data).permission }}"
+      - run: echo "Permission - ${{ fromJson(steps.get_repo_permissions_for_user.outputs.data).permission }}"
+      - run: exit ${{ fromJson(steps.get_repo_permissions_for_user.outputs.data).permission }} == 'admin'
       - uses: actions/checkout@v2
       - uses: actions/setup-dotnet@v1
         with:
