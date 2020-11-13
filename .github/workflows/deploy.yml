@@ -4,8 +4,8 @@ on:
     types:
       - published
 jobs:
-  build:
-    name: Build
+  publish:
+    name: Publish
     if: ${{ !github.event.release.prerelease && github.event.release.target_commitish == 'master' }}
     runs-on: windows-latest
     steps:
@@ -16,5 +16,9 @@ jobs:
           source-url: https://apiint.nugettest.org/v3/index.json
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.NUGET_KEY }}
-      - run: dotnet pack --configuration Release Bandwidth.Standard
-      - run: dotnet nuget push Bandwidth.Standard/bin/Release/*.nupkg
+      - name: Build
+        run: dotnet build Bandwidth.Standard
+      - name: Pack
+        run: dotnet pack --configuration Release Bandwidth.Standard
+      - name: Push
+        run: dotnet nuget push Bandwidth.Standard/bin/Release/*.nupkg
