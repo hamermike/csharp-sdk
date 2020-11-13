@@ -16,5 +16,5 @@ jobs:
           source-url: https://api.nuget.org/v3/index.json
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.NUGET_KEY }}
-        - run: dotnet pack --configuration Release Bandwidth.Standard
-        - run: dotnet nuget push Bandwidth.Standard/bin/Release/*.nupkg
+      - run: dotnet pack --configuration Release Bandwidth.Standard
+      - run: dotnet nuget push Bandwidth.Standard/bin/Release/*.nupkg
