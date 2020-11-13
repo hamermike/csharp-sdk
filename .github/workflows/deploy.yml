@@ -13,12 +13,8 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '2.2.x'
-          source-url: https://apiint.nugettest.org/v3/index.json
+      - run: dotnet build Bandwidth.Standard
+      - run: dotnet pack --configuration Release Bandwidth.Standard
         env:
-          NUGET_AUTH_TOKEN: ${{ secrets.NUGET_KEY }}
-      - name: Build
-        run: dotnet build Bandwidth.Standard
-      - name: Pack
-        run: dotnet pack --configuration Release Bandwidth.Standard
-      - name: Push
-        run: dotnet nuget push Bandwidth.Standard/bin/Release/*.nupkg -k $NUGET_AUTH_TOKEN
+          NUGET_KEY: ${{ secrets.NUGET_KEY }}
+      - run: dotnet nuget push Bandwidth.Standard/bin/Release/*.nupkg -s https://apiint.nugettest.org/v3/index.json -k $NUGET_KEY
