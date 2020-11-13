@@ -16,6 +16,5 @@ jobs:
           source-url: https://api.nuget.org/v3/index.json
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.NUGET_KEY }}
-          BW_PROJECT_NAME: 'Bandwidth.Standard'
-        - run: dotnet pack --configuration Release $BW_PROJECT_NAME
-        - run: dotnet nuget push $BW_PROJECT_NAME/bin/Release/*.nupkg
+        - run: dotnet pack --configuration Release Bandwidth.Standard
+        - run: dotnet nuget push Bandwidth.Standard/bin/Release/*.nupkg
