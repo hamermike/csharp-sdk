@@ -7,7 +7,7 @@ jobs:
   publish:
     name: Publish
     if: ${{ !github.event.release.prerelease && github.event.release.target_commitish == 'master' }}
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-dotnet@v1
@@ -20,6 +20,6 @@ jobs:
         run: dotnet build Bandwidth.Standard
       - name: Pack
         run: dotnet pack --configuration Release Bandwidth.Standard
-      - run: echo "Key... $NUGET_AUTH_TOKEN"
+      - run: echo "Key... ${{ NUGET_AUTH_TOKEN }} Secret... ${{ secrets.NUGET_KEY }} "
       - name: Push
         run: dotnet nuget push Bandwidth.Standard/bin/Release/*.nupkg
