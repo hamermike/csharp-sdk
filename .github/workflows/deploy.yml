@@ -1,4 +1,3 @@
-#add a comment
 name: Deploy
 on:
   release:
@@ -10,19 +9,13 @@ jobs:
     if: ${{ !github.event.release.prerelease && github.event.release.target_commitish == 'master' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: octokit/request-action@v2.x
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        id: get_repo_permissions_for_user
-        with:
-          route: GET /repos/:owner/:repo/collaborators/:username/permission
-          owner: hamermike # ${{ github.event.organization.name }}
-          repo: ${{ github.event.repository.name }}
-          username: ${{ github.event.release.author.login }}
-      - run: echo "Permission - ${{ fromJson(steps.get_repo_permissions_for_user.outputs.data).permission }}"
-      - run: exit ${{ fromJson(steps.get_repo_permissions_for_user.outputs.data).permission }} == 'admin'
       - uses: actions/checkout@v2
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '2.2.x'
-      - run: dotnet build
+          source-url: https://api.nuget.org/v3/index.json
+        env:
+          NUGET_AUTH_TOKEN: ${{ secrets.NUGET_KEY }}
+          BW_PROJECT_NAME: Bandwidth.Standard
+        run: dotnet pack --configuration Release $BW_PROJECT_NAME
+        run: dotnet nuget push $BW_PROJECT_NAME/bin/Release/*.nupkg
