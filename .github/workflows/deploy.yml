@@ -13,12 +13,9 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '2.2.x'
-      - name: Build project
-        run: dotnet build -c Bandwidth.Standard
-      - name: Package project
-        run: dotnet pack -c Release Bandwidth.Standard
-      - name: Push package
+      - run: dotnet build Bandwidth.Standard
+      - run: dotnet pack --configuration Release Bandwidth.Standard
+      - name: Publish NuGet package
         env:
-          NUGET_SOURCE: https://apiint.nugettest.org/v3/index.json
           NUGET_KEY: ${{ secrets.NUGET_KEY }}
-        run: dotnet nuget push Bandwidth.Standard/bin/Release/*.nupkg -s $SOURCE -k $NUGET_KEY
+        run: dotnet nuget push Bandwidth.Standard/bin/Release/*.nupkg -s https://apiint.nugettest.org/v3/index.json -k $NUGET_KEY
