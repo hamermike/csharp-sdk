@@ -3,6 +3,8 @@ on:
   release:
     types:
       - published
+    branches:
+      - master
 jobs:
   publish:
     name: Publish
@@ -15,10 +17,10 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '2.2.x'
-#      - run: dotnet build Bandwidth.Standard
       - name: Pack NuGet package
         run: dotnet pack --configuration Release $BW_PROJECT_NAME
       - name: Publish NuGet package
         env:
           NUGET_KEY: ${{ secrets.NUGET_KEY }}
-        run: dotnet nuget push $BW_PROJECT_NAME/bin/Release/*.nupkg -s https://apiint.nugettest.org/v3/index.json -k $NUGET_KEY
+          NUGET_SOURCE: https://api.nuget.org/v3/index.json
+        run: dotnet nuget push $BW_PROJECT_NAME/bin/Release/*.nupkg -s $NUGET_SOURCE -k $NUGET_KEY
