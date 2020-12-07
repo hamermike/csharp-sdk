@@ -20,11 +20,11 @@ jobs:
         run: |
           echo $RELEASE_VERSION
           echo ${{ env.RELEASE_VERSION }}
-      # - uses: actions/setup-dotnet@v1
-      #   with:
-      #     dotnet-version: '2.2.x'
-      # - name: Pack NuGet package
-      #   run: dotnet pack --configuration Release $BW_PROJECT_NAME
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '2.2.x'
+      - name: Pack NuGet package
+        run: dotnet pack --configuration Release $BW_PROJECT_NAME -p:PackageVersion=$RELEASE_VERSION
       # - name: Publish NuGet package
       #   env:
       #     NUGET_KEY: ${{ secrets.NUGET_KEY }}
